@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-07-20T01:08:43.211747+00:00",
+  "timestamp": "2021-07-22T01:06:06.658933+00:00",
   "repo": "wpack-wg/bundled-responses",
   "labels": [
     {
@@ -145,7 +145,7 @@
       "labels": [],
       "body": "I would like to discuss the possibility that the WPACK group creates a second document: an extension of the base spec defining the additions needed to implement the \"browsing into a bundle\" functionality.\r\n\r\nThose additions may include things like the primary URL, manifest, and content negotiation. The existing \"critical\" section may be used to specify which of those are required in a particular context.\r\n\r\nThis would let us cover use cases like saving a website or distributing a web app, while keeping the base spec as simple as possible.",
       "createdAt": "2021-07-14T09:49:47Z",
-      "updatedAt": "2021-07-19T10:11:13Z",
+      "updatedAt": "2021-07-20T03:43:30Z",
       "closedAt": null,
       "comments": [
         {
@@ -161,6 +161,13 @@
           "body": "The main motivation for a separate document is that a broader group of people agree on the concept of bundling in general (e.g., for subresources) than agree on bundling to represent a whole document to navigate to. So, it should be easier to get broad support for a standard for the bundle format generally if it *excludes* features required for navigation. It is likely to take longer for the navigation features to be part of a standard, due to this disagreement (but Chrome can still prototype and even ship non-standard features, per its policies, for better or worse).",
           "createdAt": "2021-07-19T10:09:23Z",
           "updatedAt": "2021-07-19T10:11:13Z"
+        },
+        {
+          "author": "hayatoito",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks for explaining the main motivation! That makes sense to me.\r\nYes, an agreement is more important.\r\n\r\nI had thought that we should not prioritize a particular use case (\"subresource loading\" or \"navigate into a bundle\"), and the bundle format document should mention every *fields*, including optional ones, if they are used in one of use cases.\r\n\r\nHowever, that might not be always a good idea and is not the goal here.  I realized that what we should focus here is a *minimum* common subset, which are required in *every* use cases.\r\n\r\nThen, removing a manifest and a primary url make sense.\r\n\r\nGiven the bundle format allows an optional section, removing a manifest and a primary url should not be a blocker for Chromium to ship a feature which requires such an optional field. We can define an optional section somewhere (in this repository or other places).\r\n\r\n",
+          "createdAt": "2021-07-20T03:41:53Z",
+          "updatedAt": "2021-07-20T03:43:30Z"
         }
       ]
     }
