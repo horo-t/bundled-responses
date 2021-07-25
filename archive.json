@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-07-22T01:06:06.658933+00:00",
+  "timestamp": "2021-07-25T01:06:25.407077+00:00",
   "repo": "wpack-wg/bundled-responses",
   "labels": [
     {
@@ -441,13 +441,13 @@
       "labels": [],
       "body": "This PR adds a description of the bundle format that follows the current version of the spec at https://github.com/wpack-wg/bundled-responses",
       "createdAt": "2021-07-05T10:35:33Z",
-      "updatedAt": "2021-07-05T10:39:04Z",
+      "updatedAt": "2021-07-22T01:38:59Z",
       "baseRepository": "wpack-wg/bundled-responses",
       "baseRefName": "main",
       "baseRefOid": "2012686401822ea1ca766560e673ca8c92c7e193",
       "headRepository": "felipeerias/bundled-responses",
       "headRefName": "bundle-format",
-      "headRefOid": "a13b7ecfbb14a1be1a615016a54ada354e99146c",
+      "headRefOid": "cba4c99abd98f88c0e45caceb8fb1cc7c45a7a59",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
