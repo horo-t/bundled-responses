@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-07-25T01:06:25.407077+00:00",
+  "timestamp": "2021-07-27T01:06:29.780982+00:00",
   "repo": "wpack-wg/bundled-responses",
   "labels": [
     {
@@ -168,6 +168,30 @@
           "body": "Thanks for explaining the main motivation! That makes sense to me.\r\nYes, an agreement is more important.\r\n\r\nI had thought that we should not prioritize a particular use case (\"subresource loading\" or \"navigate into a bundle\"), and the bundle format document should mention every *fields*, including optional ones, if they are used in one of use cases.\r\n\r\nHowever, that might not be always a good idea and is not the goal here.  I realized that what we should focus here is a *minimum* common subset, which are required in *every* use cases.\r\n\r\nThen, removing a manifest and a primary url make sense.\r\n\r\nGiven the bundle format allows an optional section, removing a manifest and a primary url should not be a blocker for Chromium to ship a feature which requires such an optional field. We can define an optional section somewhere (in this repository or other places).\r\n\r\n",
           "createdAt": "2021-07-20T03:41:53Z",
           "updatedAt": "2021-07-20T03:43:30Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "MDU6SXNzdWU5NTMzMzcwNDA=",
+      "title": "Should offset be renamed index?",
+      "url": "https://github.com/wpack-wg/bundled-responses/issues/10",
+      "state": "OPEN",
+      "author": "wbl",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Offset makes me think that it's a distance in bytes. Index would be a little clearer that it's an index into the responses array. That's what was intended, right? Because if not, there's a fun bunch of security issues around smuggling.",
+      "createdAt": "2021-07-26T22:26:58Z",
+      "updatedAt": "2021-07-26T22:40:31Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "jyasskin",
+          "authorAssociation": "COLLABORATOR",
+          "body": "It's actually a byte offset into the responses region, in order to support [random access](https://wicg.github.io/webpackage/draft-yasskin-wpack-use-cases.html#name-random-access) when the bundles are stored on disk. An index would require a linear scan.\r\n\r\nThat means that anyone (a virus scanner?) trying to check the responses for safety needs to start from the index, rather than only parsing the response array as a single CBOR object. I was focusing on clients that check for safety while loading, but it definitely makes sense to add a security consideration for folks trying to separate security checks from the actual use of the data.\r\n\r\nWe could also re-specify the responses section as a byte array instead of an array of CBOR objects, if you think that'd help.",
+          "createdAt": "2021-07-26T22:40:31Z",
+          "updatedAt": "2021-07-26T22:40:31Z"
         }
       ]
     }
@@ -441,13 +465,13 @@
       "labels": [],
       "body": "This PR adds a description of the bundle format that follows the current version of the spec at https://github.com/wpack-wg/bundled-responses",
       "createdAt": "2021-07-05T10:35:33Z",
-      "updatedAt": "2021-07-22T01:38:59Z",
+      "updatedAt": "2021-07-25T16:35:04Z",
       "baseRepository": "wpack-wg/bundled-responses",
       "baseRefName": "main",
       "baseRefOid": "2012686401822ea1ca766560e673ca8c92c7e193",
       "headRepository": "felipeerias/bundled-responses",
       "headRefName": "bundle-format",
-      "headRefOid": "cba4c99abd98f88c0e45caceb8fb1cc7c45a7a59",
+      "headRefOid": "f44e69fef480395d67a5e35e02c48d8d98ec0b6f",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
