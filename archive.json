@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-07-27T01:06:29.780982+00:00",
+  "timestamp": "2021-07-29T01:02:54.096610+00:00",
   "repo": "wpack-wg/bundled-responses",
   "labels": [
     {
@@ -183,7 +183,7 @@
       "labels": [],
       "body": "Offset makes me think that it's a distance in bytes. Index would be a little clearer that it's an index into the responses array. That's what was intended, right? Because if not, there's a fun bunch of security issues around smuggling.",
       "createdAt": "2021-07-26T22:26:58Z",
-      "updatedAt": "2021-07-26T22:40:31Z",
+      "updatedAt": "2021-07-27T15:24:01Z",
       "closedAt": null,
       "comments": [
         {
@@ -192,6 +192,27 @@
           "body": "It's actually a byte offset into the responses region, in order to support [random access](https://wicg.github.io/webpackage/draft-yasskin-wpack-use-cases.html#name-random-access) when the bundles are stored on disk. An index would require a linear scan.\r\n\r\nThat means that anyone (a virus scanner?) trying to check the responses for safety needs to start from the index, rather than only parsing the response array as a single CBOR object. I was focusing on clients that check for safety while loading, but it definitely makes sense to add a security consideration for folks trying to separate security checks from the actual use of the data.\r\n\r\nWe could also re-specify the responses section as a byte array instead of an array of CBOR objects, if you think that'd help.",
           "createdAt": "2021-07-26T22:40:31Z",
           "updatedAt": "2021-07-26T22:40:31Z"
+        },
+        {
+          "author": "wbl",
+          "authorAssociation": "NONE",
+          "body": "There's no guarantee that the regions indicated are in order, disjoint, cover the contents etc? If everyone uses the index that's fine. I'll open a PR with some clarifying text and some warnings about common polyglots this enables. It probably can become a zip file for instance.",
+          "createdAt": "2021-07-27T01:12:45Z",
+          "updatedAt": "2021-07-27T01:12:45Z"
+        },
+        {
+          "author": "jyasskin",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Right. I initially had text saying that anything that parsed was valid, and just advised against overlapping and holey responses, but someone encouraged me to remove that, in favor of it being invalid but unlikely to cause a parsing error. I'd especially appreciate text about how those polyglots become security vulnerabilities.",
+          "createdAt": "2021-07-27T03:35:09Z",
+          "updatedAt": "2021-07-27T03:35:09Z"
+        },
+        {
+          "author": "wbl",
+          "authorAssociation": "NONE",
+          "body": "The usual way is signing: e.g. you thought you signed a webpack, but actually it's a zip with different contents, or a jpeg, etc.",
+          "createdAt": "2021-07-27T15:24:01Z",
+          "updatedAt": "2021-07-27T15:24:01Z"
         }
       ]
     }
