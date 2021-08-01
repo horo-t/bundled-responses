@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-07-29T01:02:54.096610+00:00",
+  "timestamp": "2021-08-01T01:13:10.194017+00:00",
   "repo": "wpack-wg/bundled-responses",
   "labels": [
     {
@@ -477,27 +477,35 @@
     {
       "number": 8,
       "id": "MDExOlB1bGxSZXF1ZXN0NjgzNTgyMTIy",
-      "title": "Add bundle-format.md",
+      "title": "Add bundle format",
       "url": "https://github.com/wpack-wg/bundled-responses/pull/8",
       "state": "OPEN",
       "author": "felipeerias",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
-      "body": "This PR adds a description of the bundle format that follows the current version of the spec at https://github.com/wpack-wg/bundled-responses",
+      "body": "This PR adds an appendix with a concise description of the bundle format.",
       "createdAt": "2021-07-05T10:35:33Z",
-      "updatedAt": "2021-07-25T16:35:04Z",
+      "updatedAt": "2021-07-29T06:10:17Z",
       "baseRepository": "wpack-wg/bundled-responses",
       "baseRefName": "main",
       "baseRefOid": "2012686401822ea1ca766560e673ca8c92c7e193",
       "headRepository": "felipeerias/bundled-responses",
       "headRefName": "bundle-format",
-      "headRefOid": "f44e69fef480395d67a5e35e02c48d8d98ec0b6f",
+      "headRefOid": "3aecafcf9dd2a91c91d8bfe1f3d00f0afa286ace",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "felipeerias",
+          "authorAssociation": "NONE",
+          "body": "Following the feedback at the IETF meeting, I have moved the information from `bundle-format.md` into an appendix of the document.\r\n\r\n(I guess this change would need a new entry in the Changelog, under `draft-02`?)",
+          "createdAt": "2021-07-29T06:10:17Z",
+          "updatedAt": "2021-07-29T06:10:17Z"
+        }
+      ],
       "reviews": [
         {
           "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3Njk5MDQzMDI2",
