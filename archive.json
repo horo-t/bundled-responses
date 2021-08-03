@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-08-01T01:13:10.194017+00:00",
+  "timestamp": "2021-08-03T01:08:31.686790+00:00",
   "repo": "wpack-wg/bundled-responses",
   "labels": [
     {
@@ -215,6 +215,22 @@
           "updatedAt": "2021-07-27T15:24:01Z"
         }
       ]
+    },
+    {
+      "number": 11,
+      "id": "MDU6SXNzdWU5NTg2MjIzMTI=",
+      "title": "A restriction for URL; URL can have a fragment or credentials parts?",
+      "url": "https://github.com/wpack-wg/bundled-responses/issues/11",
+      "state": "OPEN",
+      "author": "hayatoito",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "It seems we had a restriction that a URL can't have a fragment nor credentials parts,\r\nhowever, it seems these restriction were removed from the format at this commit. https://github.com/WICG/webpackage/commit/826cadfa986bdb403bca2e149016459172f98144\r\n\r\n> 1. For each (`url`, `responses`) entry in the `index` map:\r\n>    1. Let `parsedUrl` be the result of parsing ({{URL}}) `url` with\r\n>      no base URL.\r\n>   1. If `parsedUrl` is a failure, its fragment is not null, or it includes\r\n>      credentials, return an error.\r\n\r\nIt is a bit unclear whether this removal was intentionally done or not.\r\n\r\nIf this was intentionally done, that might be fine.\r\nWe don't have any restriction on the format itself. Instead, each use case can introduce such a restriction.\r\n\r\ne.g.\r\nSubresource loading will ignore a URL which has a fragment.\r\n\r\ncc: @jyasskin \r\n\r\nIt would be better to clarify our intention in this issue.\r\n",
+      "createdAt": "2021-08-03T01:04:48Z",
+      "updatedAt": "2021-08-03T01:04:48Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -314,7 +330,7 @@
       "labels": [],
       "body": "This PR removes the primary URL section.\r\n\r\nThe motivation is to factor the \"core\" Web Bundles specification to include just the minimal amount needed to support cases like subresource loading. This and other removed sections can be defined in other documents in the future.",
       "createdAt": "2021-07-05T02:40:12Z",
-      "updatedAt": "2021-07-14T09:52:35Z",
+      "updatedAt": "2021-08-03T00:50:31Z",
       "baseRepository": "wpack-wg/bundled-responses",
       "baseRefName": "main",
       "baseRefOid": "2012686401822ea1ca766560e673ca8c92c7e193",
@@ -376,7 +392,21 @@
           "updatedAt": "2021-07-14T09:52:35Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NzIwNjkwODM1",
+          "commit": {
+            "abbreviatedOid": "9d7a643"
+          },
+          "author": "hayatoito",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM (just for record). Thanks for working on this.",
+          "createdAt": "2021-08-03T00:50:31Z",
+          "updatedAt": "2021-08-03T00:50:31Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 6,
@@ -390,7 +420,7 @@
       "labels": [],
       "body": "This PR removes the manifest section.\r\n\r\nThe motivation is to factor the \"core\" Web Bundles specification to include just the minimal amount needed to support cases like subresource loading, which does not need a manifest. This and other removed sections can be defined in other documents in the future.\r\n\r\nAdapted from https://github.com/WICG/webpackage/pull/619",
       "createdAt": "2021-07-05T02:40:18Z",
-      "updatedAt": "2021-07-07T00:59:17Z",
+      "updatedAt": "2021-08-03T00:51:18Z",
       "baseRepository": "wpack-wg/bundled-responses",
       "baseRefName": "main",
       "baseRefOid": "2012686401822ea1ca766560e673ca8c92c7e193",
@@ -424,7 +454,21 @@
           "updatedAt": "2021-07-07T00:59:16Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NzIwNjkxMTAy",
+          "commit": {
+            "abbreviatedOid": "985893d"
+          },
+          "author": "hayatoito",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM (just for record). Thanks for working on this.",
+          "createdAt": "2021-08-03T00:51:18Z",
+          "updatedAt": "2021-08-03T00:51:18Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 7,
@@ -477,7 +521,7 @@
     {
       "number": 8,
       "id": "MDExOlB1bGxSZXF1ZXN0NjgzNTgyMTIy",
-      "title": "Add bundle format",
+      "title": "Add bundle format appendix",
       "url": "https://github.com/wpack-wg/bundled-responses/pull/8",
       "state": "OPEN",
       "author": "felipeerias",
@@ -486,13 +530,13 @@
       "labels": [],
       "body": "This PR adds an appendix with a concise description of the bundle format.",
       "createdAt": "2021-07-05T10:35:33Z",
-      "updatedAt": "2021-07-29T06:10:17Z",
+      "updatedAt": "2021-08-03T00:53:25Z",
       "baseRepository": "wpack-wg/bundled-responses",
       "baseRefName": "main",
       "baseRefOid": "2012686401822ea1ca766560e673ca8c92c7e193",
       "headRepository": "felipeerias/bundled-responses",
       "headRefName": "bundle-format",
-      "headRefOid": "3aecafcf9dd2a91c91d8bfe1f3d00f0afa286ace",
+      "headRefOid": "f67357e0254ad6d07ce274e5586906ece7342ee3",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -518,6 +562,19 @@
           "body": "",
           "createdAt": "2021-07-05T10:39:04Z",
           "updatedAt": "2021-07-05T10:39:04Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NzIwNjkxNzk4",
+          "commit": {
+            "abbreviatedOid": "f67357e"
+          },
+          "author": "hayatoito",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM (just for record). Thanks for working on this.",
+          "createdAt": "2021-08-03T00:53:25Z",
+          "updatedAt": "2021-08-03T00:53:25Z",
           "comments": []
         }
       ]
