@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-08-03T01:08:31.686790+00:00",
+  "timestamp": "2021-08-05T01:04:54.181913+00:00",
   "repo": "wpack-wg/bundled-responses",
   "labels": [
     {
@@ -228,9 +228,24 @@
       "labels": [],
       "body": "It seems we had a restriction that a URL can't have a fragment nor credentials parts,\r\nhowever, it seems these restriction were removed from the format at this commit. https://github.com/WICG/webpackage/commit/826cadfa986bdb403bca2e149016459172f98144\r\n\r\n> 1. For each (`url`, `responses`) entry in the `index` map:\r\n>    1. Let `parsedUrl` be the result of parsing ({{URL}}) `url` with\r\n>      no base URL.\r\n>   1. If `parsedUrl` is a failure, its fragment is not null, or it includes\r\n>      credentials, return an error.\r\n\r\nIt is a bit unclear whether this removal was intentionally done or not.\r\n\r\nIf this was intentionally done, that might be fine.\r\nWe don't have any restriction on the format itself. Instead, each use case can introduce such a restriction.\r\n\r\ne.g.\r\nSubresource loading will ignore a URL which has a fragment.\r\n\r\ncc: @jyasskin \r\n\r\nIt would be better to clarify our intention in this issue.\r\n",
       "createdAt": "2021-08-03T01:04:48Z",
-      "updatedAt": "2021-08-03T01:04:48Z",
+      "updatedAt": "2021-08-04T00:48:58Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "jyasskin",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I didn't intend that change to make the subresource loading use case more lenient, but I think the WG could decide either way on whether the format itself forbids URLs with fragments or credentials.\r\n\r\nI suggest we say that index entries MUST NOT include fragments or credentials, but of course the use cases will have to explicitly specify what to do when bundles violate that requirement.",
+          "createdAt": "2021-08-03T20:21:31Z",
+          "updatedAt": "2021-08-03T20:21:31Z"
+        },
+        {
+          "author": "hayatoito",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks for clarification. I appreciate it!\r\n\r\n> suggest we say that index entries MUST NOT include fragments or credentials\r\n\r\nThat sounds reasonable to me, and matches the current chromium's bundle parser's implementation, and the behavior of CLI tools, I think, though I don't have a strong preference here.",
+          "createdAt": "2021-08-04T00:48:58Z",
+          "updatedAt": "2021-08-04T00:48:58Z"
+        }
+      ]
     }
   ],
   "pulls": [
