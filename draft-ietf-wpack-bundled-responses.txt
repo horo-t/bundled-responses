@@ -14,10 +14,9 @@ Expires: 21 February 2022
 Abstract
 
    Web bundles provide a way to bundle up groups of HTTP responses, with
-   the request URLs and content negotiation that produced them, to
-   transmit or store together.  They can include multiple top-level
-   resources, provide random access to their component exchanges, and
-   efficiently store 8-bit resources.
+   the request URLs that produced them, to transmit or store together.
+   They can include multiple top-level resources, provide random access
+   to their component exchanges, and efficiently store 8-bit resources.
 
 Discussion Venues
 
@@ -138,19 +137,13 @@ Table of Contents
    1.  They can load the bundle's metadata given a prefix of the bundle.
 
    2.  They can find a representation within the bundle given that
-       representation's URL (Section 2.2) and the content-negotiation
-       information that would appear in an HTTP request's headers.
+       representation's URL (Section 2.2).
 
 2.2.  Naming a representation
 
    Representations within a bundle are named by their "Content-Location"
    (Section 8.7 of [I-D.ietf-httpbis-semantics]), which holds a URL.
    This is also known as the representation's URL.
-
-   Multiple representations within a bundle can have the same URL, in
-   which case they are distinguished by the content negotiation
-   information contained in their "Variants" and "Variant-Key" headers
-   ([I-D.ietf-httpbis-variants]).
 
    This identifying information for each representation is stored in an
    index (Section 4.2.1) rather than in that representation's HTTP
@@ -299,69 +292,18 @@ Table of Contents
 
 4.2.1.  The index section
 
-   index = {* whatwg-url => [ variants-value, +location-in-responses ] }
-   variants-value = bstr
+   index = {* whatwg-url => [ location-in-responses ] }
    location-in-responses = (offset: uint, length: uint)
 
    The ""index"" section defines the set of HTTP representations in the
    bundle and identifies their locations in the ""responses"" section.
    It consists of a CBOR map whose keys are the URLs of the
    representations in the bundle (Section 2.2).  The value of an index
-   entry is an array whose first item is a "Variants" header field value
-   ([I-D.ietf-httpbis-variants]) or the empty string.  This is followed
-   by a sequence of offset/length pairs, one for each representation of
-   this resource.  The offset is relative to the start of the
-   ""responses"" section, with an offset of 0 referring to the head of
-   the CBOR "responses" array itself.  The length is the length in bytes
-   of the "response" CBOR item holding this representation
+   entry is an offset/length pair.  The offset is relative to the start
+   of the ""responses"" section, with an offset of 0 referring to the
+   head of the CBOR "responses" array itself.  The length is the length
+   in bytes of the "response" CBOR item holding this representation
    (Section 4.3).
-
-   If the first item in the value of an index entry is empty, it MUST be
-   followed by exactly one offset/length pair.  This means there is a
-   single representation for this resource, with no content negotiation.
-
-   Otherwise, the first item MUST be followed by one offset/length pair
-   for each of the possible combinations of available-values within the
-   "Variants" value (the first item of the array) in lexicographic (row-
-   major) order.
-
-   For example, given a "Variants" value of "accept-encoding=(gzip br),
-   accept-language=(en fr ja)", the list of offset/length pairs will
-   correspond to the "Variant-Key"s:
-
-   *  (gzip en)
-
-   *  (gzip fr)
-
-   *  (gzip ja)
-
-   *  (br en)
-
-   *  (br fr)
-
-   *  (br ja)
-
-   The order of variant-axes is important.  If the "Variants" value were
-   "accept-language=(en fr ja), accept-encoding=(gzip br)" instead, the
-   "location-in-responses" pairs would instead correspond to:
-
-   *  (en gzip)
-
-   *  (en br)
-
-   *  (fr gzip)
-
-   *  (fr br)
-
-   *  (ja gzip)
-
-   *  (ja br)
-
-   If the wrong number of offset/length pairs is present in a resource's
-   array, the entire index MUST fail to parse.
-
-   A combination of available-values that is omitted from the bundle
-   MUST be signaled by setting its offset and length to 0.
 
 4.2.2.  The critical section
 
@@ -621,12 +563,6 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
               semantics-18>.
 
-   [I-D.ietf-httpbis-variants]
-              Nottingham, M., "HTTP Representation Variants", Work in
-              Progress, Internet-Draft, draft-ietf-httpbis-variants-06,
-              3 November 2019, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-httpbis-variants-06>.
-
    [IANA.media-types]
               IANA, "Media Types",
               <http://www.iana.org/assignments/media-types>.
@@ -657,6 +593,12 @@ Table of Contents
               <https://url.spec.whatwg.org/>.
 
 7.2.  Informative References
+
+   [I-D.ietf-httpbis-variants]
+              Nottingham, M., "HTTP Representation Variants", Work in
+              Progress, Internet-Draft, draft-ietf-httpbis-variants-06,
+              3 November 2019, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-httpbis-variants-06>.
 
    [I-D.yasskin-wpack-use-cases]
               Yasskin, J., "Use Cases and Requirements for Web
