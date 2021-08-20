@@ -4,8 +4,8 @@
 
 Network Working Group                                         J. Yasskin
 Internet-Draft                                                    Google
-Intended status: Standards Track                            24 June 2021
-Expires: 26 December 2021
+Intended status: Standards Track                          20 August 2021
+Expires: 21 February 2022
 
 
                               Web Bundles
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 December 2021.
+   This Internet-Draft will expire on 21 February 2022.
 
 Copyright Notice
 
@@ -77,9 +77,7 @@ Table of Contents
        4.1.2.  Draft version numbers
      4.2.  Bundle sections
        4.2.1.  The index section
-       4.2.2.  The primary section
-       4.2.3.  The manifest section
-       4.2.4.  The critical section
+       4.2.2.  The critical section
      4.3.  Responses
      4.4.  Serving constraints
    5.  Security Considerations
@@ -91,8 +89,16 @@ Table of Contents
    7.  References
      7.1.  Normative References
      7.2.  Informative References
-   Appendix A.  Change Log
-   Appendix B.  Acknowledgements
+   Appendix A.  Web bundle Format
+     A.1.  Bundle format
+       A.1.1.  Type: "bundle"
+       A.1.2.  Type: "section-length"
+     A.2.  Core sections
+       A.2.1.  The "index" section
+       A.2.2.  The "critical" section
+       A.2.3.  The "responses" section
+   Appendix B.  Change Log
+   Appendix C.  Acknowledgements
    Author's Address
 
 1.  Introduction
@@ -118,10 +124,8 @@ Table of Contents
    A bundle is logically a set of HTTP representations (Section 3.2 of
    [I-D.ietf-httpbis-semantics]), themselves represented by HTTP
    response messages (Section 3.4 of [I-D.ietf-httpbis-semantics]).  The
-   bundle can include an optional URL identifying the primary resource
-   within the bundle and can include other optional metadata.
-   Particular applications can require that the primary URL and/or other
-   metadata is present.
+   bundle can include optional metadata, which may be required by
+   particular applications.
 
    While the order of the representations is not semantically
    meaningful, it can significantly affect performance when the bundle
@@ -274,11 +278,7 @@ Table of Contents
 
    *  ""index"" (Section 4.2.1)
 
-   *  ""primary"" (Section 4.2.2)
-
-   *  ""manifest"" (Section 4.2.3)
-
-   *  ""critical"" (Section 4.2.4)
+   *  ""critical"" (Section 4.2.2)
 
    *  ""responses"" (Section 4.3)
 
@@ -363,35 +363,7 @@ Table of Contents
    A combination of available-values that is omitted from the bundle
    MUST be signaled by setting its offset and length to 0.
 
-4.2.2.  The primary section
-
-   primary = whatwg-url
-
-   The "primary" section records a single URL identifying the primary
-   URL of the bundle.  The URL MUST refer to a resource with
-   representations contained in the bundle itself.
-
-4.2.3.  The manifest section
-
-   manifest = whatwg-url
-
-   The "manifest" section records a single URL identifying the manifest
-   of the bundle.  The URL MUST refer to a resource with representations
-   contained in the bundle itself.
-
-   The bundle can contain multiple representations at this URL, and the
-   client is expected to content-negotiate for the best one.  For
-   example, a client might select the one matching an "accept" header of
-   "application/manifest+json" ([appmanifest]) and an "accept-language"
-   header of "es-419".
-
-   Many bundles have a choice between identifying their manifest in this
-   section or in their primary resource, especially if that resource is
-   an HTML file.  Identifying the manifest in this section can help
-   recipients apply fields in the manifest sooner, for example to show a
-   splash screen before parsing the primary resource.
-
-4.2.4.  The critical section
+4.2.2.  The critical section
 
    critical = [*tstr]
 
@@ -492,12 +464,12 @@ Table of Contents
 
    3.  Do all of:
 
-       1.  If the bundle's contained URLs (e.g. in the manifest and
-           index) are derived from the request for the bundle, percent-
-           encode (https://url.spec.whatwg.org/#percent-encode) ([URL])
-           any bytes that are greater than 0x7E or are not URL code
-           points (https://url.spec.whatwg.org/#url-code-points) ([URL])
-           in these URLs.  It is particularly important to make sure no
+       1.  If the bundle's contained URLs (e.g. in the index) are
+           derived from the request for the bundle, percent-encode
+           (https://url.spec.whatwg.org/#percent-encode) ([URL]) any
+           bytes that are greater than 0x7E or are not URL code points
+           (https://url.spec.whatwg.org/#url-code-points) ([URL]) in
+           these URLs.  It is particularly important to make sure no
            unescaped nulls (0x00) or angle brackets (0x3C and 0x3E)
            appear.
 
@@ -603,11 +575,7 @@ Table of Contents
                      +==============+===============+
                      | "index"      | Section 4.2.1 |
                      +--------------+---------------+
-                     | "primary"    | Section 4.2.2 |
-                     +--------------+---------------+
-                     | "manifest"   | Section 4.2.3 |
-                     +--------------+---------------+
-                     | "critical"   | Section 4.2.4 |
+                     | "critical"   | Section 4.2.2 |
                      +--------------+---------------+
                      | "responses"  | Section 4.3   |
                      +--------------+---------------+
@@ -625,13 +593,6 @@ Table of Contents
 
 7.1.  Normative References
 
-   [appmanifest]
-              Caceres, M., Christiansen, K., Lamouri, M., Kostiainen,
-              A., Dolin, R., and M. Giuca, "Web App Manifest", World
-              Wide Web Consortium WD WD-appmanifest-20180523, 23 May
-              2018,
-              <https://www.w3.org/TR/2018/WD-appmanifest-20180523>.
-
    [CBORbis]  Bormann, C. and P. Hoffman, "Concise Binary Object
               Representation (CBOR)", STD 94, RFC 8949,
               DOI 10.17487/RFC8949, December 2020,
@@ -644,27 +605,33 @@ Table of Contents
               June 2019,
               <https://datatracker.ietf.org/doc/html/rfc8610>.
 
-   [FETCH]    WHATWG, "Fetch", June 2021,
+   [FETCH]    WHATWG, "Fetch", August 2021,
               <https://fetch.spec.whatwg.org/>.
+
+   [HTTP]     Fielding, R., Gettys, J., Mogul, J., Frystyk, H.,
+              Masinter, L., Leach, P., and T. Berners-Lee, "Hypertext
+              Transfer Protocol -- HTTP/1.1", RFC 2616,
+              DOI 10.17487/RFC2616, June 1999,
+              <https://datatracker.ietf.org/doc/html/rfc2616>.
 
    [I-D.ietf-httpbis-semantics]
               Fielding, R. T., Nottingham, M., and J. Reschke, "HTTP
               Semantics", Work in Progress, Internet-Draft, draft-ietf-
-              httpbis-semantics-16, 27 May 2021,
+              httpbis-semantics-18, 18 August 2021,
               <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
-              semantics-16.txt>.
+              semantics-18>.
 
    [I-D.ietf-httpbis-variants]
               Nottingham, M., "HTTP Representation Variants", Work in
               Progress, Internet-Draft, draft-ietf-httpbis-variants-06,
               3 November 2019, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-httpbis-variants-06.txt>.
+              draft-ietf-httpbis-variants-06>.
 
    [IANA.media-types]
               IANA, "Media Types",
               <http://www.iana.org/assignments/media-types>.
 
-   [INFRA]    WHATWG, "Infra", June 2021,
+   [INFRA]    WHATWG, "Infra", August 2021,
               <https://infra.spec.whatwg.org/>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -686,7 +653,8 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://datatracker.ietf.org/doc/html/rfc8174>.
 
-   [URL]      WHATWG, "URL", June 2021, <https://url.spec.whatwg.org/>.
+   [URL]      WHATWG, "URL", August 2021,
+              <https://url.spec.whatwg.org/>.
 
 7.2.  Informative References
 
@@ -695,11 +663,198 @@ Table of Contents
               Packages", Work in Progress, Internet-Draft, draft-
               yasskin-wpack-use-cases-02, 13 April 2021,
               <https://datatracker.ietf.org/doc/html/draft-yasskin-
-              wpack-use-cases-02.txt>.
+              wpack-use-cases-02>.
 
-Appendix A.  Change Log
+Appendix A.  Web bundle Format
+
+   This appendix summarises the Web bundle format.
+
+   Web bundles are defined in CDDL ([CDDL]), a language for expressing
+   grammars over CBOR ([CBORbis]) binary data formats.  Please refer to
+   ([CDDL]) and ([CBORbis]) for the exact definition of the types used
+   in this specification.
+
+   To maintain compatibility across versions and environments, a Web
+   bundle begins with a magic number (file signature) followed by a
+   version number, and ends with the bundle's length.  The version
+   number is expected to not change, except as a last resort.
+
+   At the top level of their binary format, Web bundles are defined as a
+   series of named sections, each with a length.  The "section-lengths"
+   field contains a table of contents, and the sections are found in the
+   main "sections" field.
+
+   The bundle MUST contain the ""index"" and ""responses"" sections.
+   All other sections are optional.
+
+   Even though this format starts out with just three core sections, its
+   architecture ensures that the format is extensible.  Over time, more
+   sections could be defined and used without causing a breaking change.
+   Other binary formats such as WebAssembly bytecode
+   (https://webassembly.github.io/spec/core/binary/
+   modules.html#sections) have made a similar design decision.
+
+A.1.  Bundle format
+
+A.1.1.  Type: "bundle"
+
+    +=================+=======+==========+===========================+
+    | name            | type  | size     | description               |
+    +=================+=======+==========+===========================+
+    | magic           | bytes | 64 bits  | "F0 9F 8C 90 F0 9F 93 A6" |
+    |                 |       |          | (hexadecimal)             |
+    +-----------------+-------+----------+---------------------------+
+    | version         | bytes | 32 bits  | the version of the        |
+    |                 |       |          | specification             |
+    +-----------------+-------+----------+---------------------------+
+    | section-lengths | array | variable | array of _section-length_ |
+    |                 |       |          | (Appendix A.1.2)          |
+    +-----------------+-------+----------+---------------------------+
+    | sections        | array | variable | see _core sections_       |
+    |                 |       |          | (Appendix A.2)            |
+    +-----------------+-------+----------+---------------------------+
+    | length          | bytes | 64 bits  | the length of the bundle  |
+    |                 |       |          | in bytes                  |
+    +-----------------+-------+----------+---------------------------+
+
+                                 Table 2
+
+   CDDL spec:
+
+   webbundle = [
+     magic: h'F0 9F 8C 90 F0 9F 93 A6',
+     version: bytes .size 4,
+     section-lengths: bytes .cbor section-lengths,
+     sections: [* any ],
+     length: bytes .size 8, ; Big-endian number of bytes in the bundle.
+   ]
+
+   Note: the basic type "bytes" (alternatively named "bstr"), defined as
+   Major type 2 in the [CBORbis] specification, represents a byte
+   string.
+
+A.1.2.  Type: "section-length"
+
+       +==============+======+==========+=========================+
+       | name         | type | size     | description             |
+       +==============+======+==========+=========================+
+       | section-name | tstr | variable | The name of the section |
+       +--------------+------+----------+-------------------------+
+       | length       | uint | variable | The length of the       |
+       |              |      |          | section in bytes        |
+       +--------------+------+----------+-------------------------+
+
+                                 Table 3
+
+   CDDL spec:
+
+   section-lengths = [* (section-name: tstr, length: uint) ]
+
+   Note: the basic type "tstr", defined as Major type 3 in the [CBORbis]
+   specification, represents a text string encoded as UTF-8.
+
+A.2.  Core sections
+
+A.2.1.  The "index" section
+
+   The "index" section maps URLs ([URL]) to offset/length pairs in the
+   "responses" (Appendix A.2.3) section.
+
+A.2.1.1.  Type: "index"
+
+        +=======+=======================+==========+=============+
+        | name  | type                  | size     | description |
+        +=======+=======================+==========+=============+
+        | index | map (whatwg-url       | variable | A map from  |
+        |       | (Appendix A.2.1.2) => |          | a URL to a  |
+        |       | location-in-responses |          | location    |
+        |       | (Appendix A.2.1.3))   |          |             |
+        +-------+-----------------------+----------+-------------+
+
+                                 Table 4
+
+A.2.1.2.  Type: "whatwg-url"
+
+     +============+======+==========+===============================+
+     | name       | type | size     | description                   |
+     +============+======+==========+===============================+
+     | whatwg-url | tstr | variable | A URL stored as a text string |
+     +------------+------+----------+-------------------------------+
+
+                                 Table 5
+
+A.2.1.3.  Type: "location-in-responses"
+
+       +========+======+==========+================================+
+       | name   | type | size     | description                    |
+       +========+======+==========+================================+
+       | offset | uint | variable | An offset within the responses |
+       |        |      |          | (Appendix A.2.3) section       |
+       +--------+------+----------+--------------------------------+
+       | length | uint | variable | The size of the response in    |
+       |        |      |          | bytes                          |
+       +--------+------+----------+--------------------------------+
+
+                                  Table 6
+
+   CDDL spec:
+
+   index = {* whatwg-url => [ location-in-responses ] }
+   whatwg-url = tstr
+   location-in-responses = (offset: uint, length: uint)
+
+   Note: the basic type "uint", defined as Major type 0 in the [CBORbis]
+   specification, represents an unsigned integer.
+
+A.2.2.  The "critical" section
+
+   The "critical" section contains the names of additional sections of
+   the bundle that the client needs to understand in order to load the
+   bundle correctly.  The rest of the sections are assumed to be
+   optional.  If the client has not implemented a section named by one
+   of the items in this list, the client MUST fail to parse the bundle
+   as a whole.
+
+   The "critical" section itself is optional.
+
+   CDDL spec:
+
+   critical = [*tstr]
+
+A.2.3.  The "responses" section
+
+   The "responses" section contains an array of HTTP responses ([HTTP]).
+   Each response contains the response headers and the response body.
+
+A.2.3.1.  Type: "response"
+
+     +=========+=============+==========+===========================+
+     | name    | type        | size     | description               |
+     +=========+=============+==========+===========================+
+     | headers | map ("bstr" | variable | A map of field name to    |
+     |         | => "bstr")  |          | field value               |
+     +---------+-------------+----------+---------------------------+
+     | payload | bstr        | variable | The content of the HTTP   |
+     |         |             |          | response as a byte string |
+     +---------+-------------+----------+---------------------------+
+
+                                 Table 7
+
+   CDDL spec:
+
+   responses = [*response]
+   response = [headers: bstr .cbor headers, payload: bstr]
+   headers = {* bstr => bstr}
+
+Appendix B.  Change Log
 
    This section is to be removed before publishing as an RFC.
+
+   draft-02
+
+   *  Removed primary URL, manifest and content negotiation.
+
+   *  Added bundle format appendix.
 
    draft-01
 
@@ -765,7 +920,7 @@ Appendix A.  Change Log
    *  Use the CBORbis "deterministic encoding" requirements instead of
       "canonicalization" requirements.
 
-Appendix B.  Acknowledgements
+Appendix C.  Acknowledgements
 
    Thanks to the Chrome loading team, especially Kinuko Yasuda and
    Kouhei Ueno for making the format work well when streamed.
